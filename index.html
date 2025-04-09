@@ -1,99 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>قنوات UDP المحلية - سامسونج</title>
+    <meta charset="utf-8">
+    <title>القنوات المباشرة - UDP</title>
     <style>
         body {
-            background: #000000;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
+            background: #000;
+            color: #fff;
+            font-family: Arial;
             padding: 20px;
         }
-        
-        .header-image {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto 30px;
-            border-bottom: 3px solid #2d5f8a;
-        }
-        
-        .channel-box {
-            background: #1a1a1a;
-            padding: 15px 25px;
-            margin: 0 auto 20px;
-            width: 70%;
-            max-width: 600px;
-            cursor: pointer;
-            border-radius: 8px;
-            border: 2px solid #2d5f8a;
-            transition: all 0.3s ease;
-        }
-        
-        .channel-box:hover {
-            background: #2d5f8a;
-            transform: scale(1.02);
-        }
-        
-        .channel-list {
-            display: none;
-            background: #0d0d0d;
-            width: 70%;
-            max-width: 600px;
-            margin: 10px auto;
+        .channel {
             padding: 15px;
-            border-radius: 8px;
-        }
-        
-        .channel-item {
-            padding: 12px;
-            margin: 8px 0;
+            margin: 10px;
             background: #1a1a1a;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: 0.3s;
         }
-        
-        .channel-item:hover {
+        .channel:hover {
             background: #2d5f8a;
         }
     </style>
 </head>
 <body>
-    <!-- الواجهة الرئيسية -->
-    <img src="image.jpg" alt="واجهة القنوات" class="header-image">
 
-    <!-- صندوق القنوات -->
-    <div class="channel-box" onclick="toggleChannels()">
-        🛎 انقر هنا لعرض قائمة القنوات
+<div id="channels">
+    <div class="channel" onclick="playChannel('udp://@239.99.5.10:5001')">
+        قناة القرآن الكريم (239.99.5.10:5001)
     </div>
-
-    <!-- قائمة القنوات المخفية -->
-    <div id="channelList" class="channel-list">
-        <div class="channel-item" onclick="playChannel('udp://239.99.5.10:5001')">
-            📻 قناة القرآن الكريم (UDP:239.99.5.10:5001)
-        </div>
-        <div class="channel-item" onclick="playChannel('udp://239.99.5.11:5001')">
-            📺 قناة السنة النبوية (UDP:239.99.5.11:5001)
-        </div>
-        <!-- يمكن إضافة المزيد من القنوات هنا -->
+    
+    <div class="channel" onclick="playChannel('udp://@239.99.5.11:5001')">
+        قناة السنة النبوية (239.99.5.11:5001)
     </div>
+</div>
 
-    <script>
-        function toggleChannels() {
-            const list = document.getElementById("channelList");
-            list.style.display = (list.style.display === "none" || !list.style.display) ? "block" : "none";
+<script>
+function playChannel(url) {
+    try {
+        // محاولة التشغيل عبر تطبيقات خارجية
+        window.location.href = 'ssiptv://' + url;
+    } catch (e) {
+        // إذا فشلت المحاولة الأولى
+        try {
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = url;
+            document.body.appendChild(iframe);
+        } catch (err) {
+            alert('حدث خطأ! تأكد من تثبيت تطبيق IPTV');
         }
+    }
+}
+</script>
 
-        function playChannel(url) {
-            // محاولة فتح القناة عبر تطبيق IPTV
-            try {
-                window.location.href = `ssiptv:${url}`;
-            } catch (e) {
-                alert("يجب تثبيت تطبيق IPTV أولاً!");
-            }
-        }
-    </script>
 </body>
 </html>
